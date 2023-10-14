@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_quotation_order" model="ir.actions.report">
+        <field name="name">Quotation Order</field>
+        <field name="model">award.notification</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">company_custom.report_quotation_order</field>
+        <field name="report_file">company_custom.report_quotation_order</field>
+        <field name="binding_model_id" ref="model_award_notification"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_quotation_order">
+        <t t-foreach="docs" t-as="property">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+
+                    <div class="page">
+                        <h3 t-if="property.award_number">
+                            <strong>Quotation Data: </strong>
+                        </h3>
+                        <div t-if="property.award_number">
+                            <strong>Number: </strong>
+                            <span t-field="property.award_number"/>
+                        </div>
+
+                        <div>
+                            <strong>Customer: </strong>
+                            <span t-field="property.customer_id"/>
+                        </div>
+                        <div>
+                            <strong>Issue Date: </strong>
+                            <span t-field="property.issue_date"/>
+                        </div>
+                        <div>
+                            <strong>Expire Date: </strong>
+                            <span t-field="property.expire_date"/>
+                        </div>
+                        <div>
+                            <strong>Payment Terms: </strong>
+                            <span t-field="property.payment_term_id"/>
+                        </div>
+                        <div>
+                            <strong>Extra Conditions: </strong>
+                            <span t-field="property.extra_conditions"/>
+                        </div>
+                        <br></br>
+                        <br></br>
+                        <h3 t-if="property.award_notification_number">
+                            <strong>Award Notification Data: </strong>
+                        </h3>
+                        <div t-if="property.award_notification_number">
+                            <strong>Number: </strong>
+                            <span t-field="property.award_notification_number"/>
+                        </div>
+                        <div t-if="property.an_receiving_date">
+                            <strong>AW Receiving Date: </strong>
+                            <span t-field="property.an_receiving_date"/>
+                        </div>
+                        <div t-if="property.an_expire_date">
+                            <strong>AW Expire Date: </strong>
+                            <span t-field="property.an_expire_date"/>
+                        </div>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Supplier</th>
+                                    <th>Quantity</th>
+                                    <th>Unit Price</th>
+                                    <th>Total Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="lines" t-value="property.mapped('award_notification_line_ids')"/>
+                                <tr t-foreach="lines" t-as="line">
+                                    <td>
+                                        <span t-field="line.product_id"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="line.vendor_id"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="line.product_quantity"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="line.product_unit_price"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="line.product_total_price"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+
+</odoo>
